@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Pet Paradise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        :root {
+            --primary: #6ecbf5;
+            --secondary: #059ee3;
+            --accent: #ff9e4a;
+            --light: #fff;
+            --dark: #333;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(to right, var(--accent), #ff6b6b);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 5px solid var(--light);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .pet-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--light);
+            padding: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .pet-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .pet-level {
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 400px;
+        }
+
+        .pet-area {
+            flex: 3;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            border-right: 2px dashed #ddd;
+        }
+
+        .pet-display {
+            font-size: 120px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+        }
+
+        .pet-message {
+            background-color: var(--light);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            max-width: 80%;
+            position: relative;
+        }
+
+        .pet-message:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent var(--primary) transparent;
+        }
+
+        .stats-area {
+            flex: 2;
+            padding: 20px;
+            background-color: var(--light);
+        }
+
+        .stat {
+            margin-bottom: 20px;
+        }
+
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .stat-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+
+        .action-btn i {
+            font-size: 1.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #f0f0f0;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background-color: var(--light);
+            color: var(--secondary);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .shop-item {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .shop-item:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .shop-item i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .inventory-items {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .inventory-item {
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .game-area {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-btn {
+            background: linear-gradient(to bottom, var(--accent), #ff6b6b);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .coins {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: var(--warning);
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #f0f0f0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .pet-area {
+                border-right: none;
+                border-bottom: 2px dashed #ddd;
+            }
+            
+            .actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .shop-items, .inventory-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-paw"></i> Virtual Pet Paradise</h1>
+            <p>Rawat hewan peliharaan virtualmu dengan penuh kasih sayang!</p>
+        </header>
+        
+        <div class="pet-info">
+            <div class="pet-name" id="pet-name">Petsy</div>
+            <div class="pet-level">Level <span id="pet-level">1</span></div>
+            <div class="coins"><i class="fas fa-coins"></i> <span id="coin-count">50</span></div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="care">Perawatan</div>
+            <div class="tab" data-tab="shop">Toko</div>
+            <div class="tab" data-tab="games">Permainan</div>
+            <div class="tab" data-tab="inventory">Inventori</div>
+        </div>
+        
+        <div class="tab-content active" id="care-tab">
+            <div class="main-content">
+                <div class="pet-area">
+                    <div class="pet-display" id="pet-display">🐶</div>
+                    <div class="pet-message" id="pet-message">Hai! Aku senang bertemu denganmu!</div>
+                </div>
+                
+                <div class="stats-area">
+                    <div class="stat">
+                        <div class="stat-label">
+                            <span>Lapar</span>
+                            <span id="hunger-value">70%</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-fill" id="hunger-bar" style="width: 70%; background-color: var(--warning);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="stat-label">
+                            <span>Kebahagiaan</span>
+                            <span id="happiness-value">85%</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-fill" id="happiness-bar" style="width: 85%; background-color: var(--success);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="stat-label">
+                            <span>Energi</span>
+                            <span id="energy-value">90%</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-fill" id="energy-bar" style="width: 90%; background-color: var(--primary);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat">
+                        <div class="stat-label">
+                            <span>Kebersihan</span>
+                            <span id="cleanliness-value">80%</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-fill" id="cleanliness-bar" style="width: 80%; background-color: var(--secondary);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="actions">
+                        <button class="action-btn" id="feed-btn">
+                            <i class="fas fa-utensils"></i> Beri Makan
+                        </button>
+                        <button class="action-btn" id="play-btn">
+                            <i class="fas fa-gamepad"></i> Main Bersama
+                        </button>
+                        <button class="action-btn" id="clean-btn">
+                            <i class="fas fa-bath"></i> Mandikan
+                        </button>
+                        <button class="action-btn" id="sleep-btn">
+                            <i class="fas fa-bed"></i> Tidurkan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="shop-tab">
+            <h2 style="text-align: center; margin-bottom: 20px;">Toko Virtual Pet</h2>
+            <div class="shop-items">
+                <div class="shop-item" data-item="food">
+                    <i class="fas fa-apple-alt"></i>
+                    <div>Makanan Lezat</div>
+                    <div><i class="fas fa-coins"></i> 10</div>
+                </div>
+                <div class="shop-item" data-item="toy">
+                    <i class="fas fa-baseball-ball"></i>
+                    <div>Bola Mainan</div>
+                    <div><i class="fas fa-coins"></i> 15</div>
+                </div>
+                <div class="shop-item" data-item="shampoo">
+                    <i class="fas fa-pump-soap"></i>
+                    <div>Shampoo Wangi</div>
+                    <div><i class="fas fa-coins"></i> 20</div>
+                </div>
+                <div class="shop-item" data-item="collar">
+                    <i class="fas fa-gem"></i>
+                    <div>Kalung Berlian</div>
+                    <div><i class="fas fa-coins"></i> 50</div>
+                </div>
+                <div class="shop-item" data-item="house">
+                    <i class="fas fa-home"></i>
+                    <div>Rumah Mewah</div>
+                    <div><i class="fas fa-coins"></i> 100</div>
+                </div>
+                <div class="shop-item" data-item="medicine">
+                    <i class="fas fa-first-aid"></i>
+                    <div>Obat-obatan</div>
+                    <div><i class="fas fa-coins"></i> 30</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="games-tab">
+            <div class="game-area">
+                <h2>Permainan Seru</h2>
+                <p>Mainkan game untuk mendapatkan koin dan meningkatkan kebahagiaan hewan peliharaanmu!</p>
+                
+                <div class="game-container">
+                    <div id="game-content">
+                        <p>Klik tombol di bawah untuk bermain!</p>
+                        <button class="game-btn" id="start-game">Mulai Permainan</button>
+                    </div>
+                </div>
+                
+                <div class="coins">Koin yang dimiliki: <i class="fas fa-coins"></i> <span id="game-coin-count">50</span></div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="inventory-tab">
+            <h2 style="text-align: center; margin-bottom: 20px;">Inventori Barang</h2>
+            <div class="inventory-items">
+                <div class="inventory-item">🍎</div>
+                <div class="inventory-item">🎾</div>
+                <div class="inventory-item">🧴</div>
+                <div class="inventory-item">💎</div>
+                <div class="inventory-item">🏠</div>
+                <div class="inventory-item">💊</div>
+                <div class="inventory-item">🦴</div>
+                <div class="inventory-item">🧸</div>
+            </div>
+            <p style="text-align: center; margin-top: 20px;">Gunakan barang dari inventori untuk merawat hewan peliharaanmu!</p>
+        </div>
+        
+        <footer>
+            <p>Virtual Pet Paradise © 2023 - Semua hewan virtual dilindungi dengan cinta!</p>
+            <p>Website ini berjalan sepenuhnya offline - Data disimpan di peramban Anda</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification">Pemberitahuan</div>
+
+    <script>
+        // Data hewan peliharaan
+        let pet = {
+            name: "Petsy",
+            type: "dog",
+            level: 1,
+            exp: 0,
+            hunger: 70,
+            happiness: 85,
+            energy: 90,
+            cleanliness: 80,
+            coins: 50
+        };
+
+        // Data inventory
+        let inventory = {
+            food: 3,
+            toy: 2,
+            shampoo: 1,
+            collar: 0,
+            house: 0,
+            medicine: 0
+        };
+
+        // Elemen DOM
+        const petDisplay = document.getElementById('pet-display');
+        const petMessage = document.getElementById('pet-message');
+        const petName = document.getElementById('pet-name');
+        const petLevel = document.getElementById('pet-level');
+        const coinCount = document.getElementById('coin-count');
+        
+        // Stat bars
+        const hungerBar = document.getElementById('hunger-bar');
+        const hungerValue = document.getElementById('hunger-value');
+        const happinessBar = document.getElementById('happiness-bar');
+        const happinessValue = document.getElementById('happiness-value');
+        const energyBar = document.getElementById('energy-bar');
+        const energyValue = document.getElementById('energy-value');
+        const cleanlinessBar = document.getElementById('cleanliness-bar');
+        const cleanlinessValue = document.getElementById('cleanliness-value');
+        
+        // Tombol aksi
+        const feedBtn = document.getElementById('feed-btn');
+        const playBtn = document.getElementById('play-btn');
+        const cleanBtn = document.getElementById('clean-btn');
+        const sleepBtn = document.getElementById('sleep-btn');
+        
+        // Tab system
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Notifikasi
+        const notification = document.getElementById('notification');
+        
+        // Load data dari localStorage
+        function loadGameData() {
+            const savedPet = localStorage.getItem('virtualPet');
+            const savedInventory = localStorage.getItem('petInventory');
+            
+            if (savedPet) {
+                pet = JSON.parse(savedPet);
+            }
+            
+            if (savedInventory) {
+                inventory = JSON.parse(savedInventory);
+            }
+            
+            updateDisplay();
+        }
+        
+        // Simpan data ke localStorage
+        function saveGameData() {
+            localStorage.setItem('virtualPet', JSON.stringify(pet));
+            localStorage.setItem('petInventory', JSON.stringify(inventory));
+        }
+        
+        // Update tampilan statistik
+        function updateStats() {
+            hungerBar.style.width = pet.hunger + '%';
+            hungerValue.textContent = pet.hunger + '%';
+            
+            happinessBar.style.width = pet.happiness + '%';
+            happinessValue.textContent = pet.happiness + '%';
+            
+            energyBar.style.width = pet.energy + '%';
+            energyValue.textContent = pet.energy + '%';
+            
+            cleanlinessBar.style.width = pet.cleanliness + '%';
+            cleanlinessValue.textContent = pet.cleanliness + '%';
+            
+            petLevel.textContent = pet.level;
+            coinCount.textContent = pet.coins;
+            document.getElementById('game-coin-count').textContent = pet.coins;
+            
+            // Update emosi hewan berdasarkan status
+            updatePetEmotion();
+        }
+        
+        // Update emosi dan pesan hewan
+        function updatePetEmotion() {
+            if (pet.hunger < 20) {
+                petDisplay.textContent = '😫';
+                petMessage.textContent = 'Aku lapar sekali... Tolong beri aku makan!';
+            } else if (pet.happiness < 30) {
+                petDisplay.textContent = '😔';
+                petMessage.textContent = 'Aku sedih, main denganku yuk!';
+            } else if (pet.energy < 20) {
+                petDisplay.textContent = '😴';
+                petMessage.textContent = 'Aku sangat mengantuk...';
+            } else if (pet.cleanliness < 30) {
+                petDisplay.textContent = '🤢';
+                petMessage.textContent = 'Aku merasa kotor, mandikan aku!';
+            } else {
+                petDisplay.textContent = '🐶';
+                petMessage.textContent = getRandomHappyMessage();
+            }
+        }
+        
+        // Dapatkan pesan bahagia acak
+        function getRandomHappyMessage() {
+            const messages = [
+                'Hai! Aku senang bertemu denganmu!',
+                'Kamu pemilik yang hebat!',
+                'Aku sangat bahagia hari ini!',
+                'Mari kita bermain bersama!',
+                'Aku menyayangimu!',
+                'Terima kasih telah merawatku!'
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+        
+        // Tampilkan notifikasi
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = 'notification';
+            
+            // Set warna berdasarkan jenis notifikasi
+            if (type === 'success') {
+                notification.style.backgroundColor = 'var(--success)';
+            } else if (type === 'warning') {
+                notification.style.backgroundColor = 'var(--warning)';
+            } else if (type === 'error') {
+                notification.style.backgroundColor = 'var(--danger)';
+            }
+            
+            // Tampilkan notifikasi
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Sembunyikan setelah 3 detik
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Sistem level dan experience
+        function addExp(amount) {
+            pet.exp += amount;
+            const expNeeded = pet.level * 20;
+            
+            if (pet.exp >= expNeeded) {
+                pet.level++;
+                pet.exp = 0;
+                showNotification(`Selamat! ${pet.name} naik ke level ${pet.level}!`, 'success');
+            }
+        }
+        
+        // Update seluruh tampilan
+        function updateDisplay() {
+            updateStats();
+            saveGameData();
+        }
+        
+        // Event listener untuk tombol aksi
+        feedBtn.addEventListener('click', function() {
+            if (inventory.food > 0) {
+                pet.hunger = Math.min(100, pet.hunger + 20);
+                inventory.food--;
+                addExp(5);
+                showNotification(`${pet.name} sudah makan! Lapar -20%`, 'success');
+                updateDisplay();
+            } else {
+                showNotification('Kamu tidak memiliki makanan! Beli di toko.', 'warning');
+            }
+        });
+        
+        playBtn.addEventListener('click', function() {
+            if (inventory.toy > 0) {
+                pet.happiness = Math.min(100, pet.happiness + 15);
+                pet.hunger = Math.max(0, pet.hunger - 5);
+                pet.energy = Math.max(0, pet.energy - 10);
+                addExp(8);
+                showNotification(`${pet.name} senang bermain! Bahagia +15%`, 'success');
+                updateDisplay();
+            } else {
+                showNotification('Kamu tidak memiliki mainan! Beli di toko.', 'warning');
+            }
+        });
+        
+        cleanBtn.addEventListener('click', function() {
+            if (inventory.shampoo > 0) {
+                pet.cleanliness = 100;
+                inventory.shampoo--;
+                addExp(3);
+                showNotification(`${pet.name} sudah dimandikan! Kebersihan +100%`, 'success');
+                updateDisplay();
+            } else {
+                showNotification('Kamu tidak memiliki shampoo! Beli di toko.', 'warning');
+            }
+        });
+        
+        sleepBtn.addEventListener('click', function() {
+            pet.energy = 100;
+            pet.hunger = Math.max(0, pet.hunger - 10);
+            addExp(2);
+            showNotification(`${pet.name} sudah tidur! Energi +100%`, 'success');
+            updateDisplay();
+        });
+        
+        // Sistem tab
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Hapus kelas active dari semua tab dan konten
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(tc => tc.classList.remove('active'));
+                
+                // Tambahkan kelas active ke tab dan konten yang diklik
+                tab.classList.add('active');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // Sistem toko
+        const shopItems = document.querySelectorAll('.shop-item');
+        shopItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const itemType = item.getAttribute('data-item');
+                const itemCost = parseInt(item.querySelector('div:last-child').textContent.replace(/\D/g, ''));
+                
+                if (pet.coins >= itemCost) {
+                    pet.coins -= itemCost;
+                    inventory[itemType]++;
+                    showNotification(`Berhasil membeli ${itemType}!`, 'success');
+                    updateDisplay();
+                } else {
+                    showNotification('Koin tidak cukup!', 'error');
+                }
+            });
+        });
+        
+        // Sistem permainan
+        const startGameBtn = document.getElementById('start-game');
+        const gameContent = document.getElementById('game-content');
+        
+        startGameBtn.addEventListener('click', function() {
+            gameContent.innerHTML = `
+                <p>Tebak angka antara 1-10!</p>
+                <input type="number" id="guess-input" min="1" max="10" style="padding: 10px; font-size: 1.2rem; width: 80px; text-align: center;">
+                <button class="game-btn" id="guess-btn" style="margin-top: 10px;">Tebak!</button>
+            `;
+            
+            const randomNumber = Math.floor(Math.random() * 10) + 1;
+            let attempts = 3;
+            
+            document.getElementById('guess-btn').addEventListener('click', function() {
+                const guess = parseInt(document.getElementById('guess-input').value);
+                
+                if (isNaN(guess) || guess < 1 || guess > 10) {
+                    showNotification('Masukkan angka antara 1-10!', 'warning');
+                    return;
+                }
+                
+                if (guess === randomNumber) {
+                    const coinsWon = Math.floor(Math.random() * 20) + 10;
+                    pet.coins += coinsWon;
+                    pet.happiness = Math.min(100, pet.happiness + 5);
+                    showNotification(`Selamat! Tebakan benar! Kamu mendapatkan ${coinsWon} koin!`, 'success');
+                    gameContent.innerHTML = `
+                        <p>Selamat! Kamu menebak dengan benar!</p>
+                        <button class="game-btn" id="play-again">Main Lagi</button>
+                    `;
+                    
+                    document.getElementById('play-again').addEventListener('click', function() {
+                        startGameBtn.click();
+                    });
+                } else {
+                    attempts--;
+                    
+                    if (attempts > 0) {
+                        showNotification(`Tebakan salah! Sisa percobaan: ${attempts}`, 'warning');
+                    } else {
+                        showNotification(`Game over! Angka yang benar adalah ${randomNumber}.`, 'error');
+                        gameContent.innerHTML = `
+                            <p>Game over! Coba lagi!</p>
+                            <button class="game-btn" id="play-again">Main Lagi</button>
+                        `;
+                        
+                        document.getElementById('play-again').addEventListener('click', function() {
+                            startGameBtn.click();
+                        });
+                    }
+                }
+                
+                updateDisplay();
+            });
+        });
+        
+        // Simulasi waktu (stat menurun seiring waktu)
+        setInterval(function() {
+            pet.hunger = Math.max(0, pet.hunger - 1);
+            pet.happiness = Math.max(0, pet.happiness - 0.5);
+            pet.energy = Math.max(0, pet.energy - 0.3);
+            pet.cleanliness = Math.max(0, pet.cleanliness - 0.7);
+            
+            updateDisplay();
+        }, 60000); // Setiap 1 menit
+        
+        // Inisialisasi game
+        loadGameData();
+        
+        // Animasi hewan
+        setInterval(() => {
+            if (pet.happiness > 70 && pet.energy > 50) {
+                petDisplay.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    petDisplay.style.transform = 'scale(1)';
+                }, 300);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
