@@ -3,1081 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual Pet Paradise</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Pet Care Adventure</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
-        }
-
-        :root {
-            --primary: #6C63FF;
-            --primary-light: #8A84FF;
-            --secondary: #36D1DC;
-            --accent: #FF6584;
-            --light: #F8F9FA;
-            --dark: #2D3748;
-            --success: #4CAF50;
-            --warning: #FFB74D;
-            --danger: #F44336;
-            --card-bg: #FFFFFF;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --radius: 16px;
-            --transition: all 0.3s ease;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: var(--dark);
-            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
+            justify-content: center;
+            height: 100vh;
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 30px;
+            background-color: #ffb3cc;
+            padding: 20px;
+            width: 100%;
             text-align: center;
-            position: relative;
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-            padding-bottom: 50px;
         }
 
         h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
+            color: #fff;
+            font-size: 36px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #pet-selection, #pet-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #pet-selection h2, #pet-info h2 {
+            font-size: 24px;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-
-        .pet-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            padding: 20px 30px;
-            margin-top: -30px;
-            border-radius: var(--radius);
-            margin-left: 30px;
-            margin-right: 30px;
-            box-shadow: var(--shadow);
-            position: relative;
-            z-index: 10;
-        }
-
-        .pet-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .pet-level {
-            background: linear-gradient(135deg, var(--accent) 0%, #FF8EA6 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(255, 101, 132, 0.3);
-        }
-
-        .coins {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1.2rem;
-            color: var(--warning);
-            font-weight: 600;
-            background: rgba(255, 183, 77, 0.1);
-            padding: 8px 18px;
-            border-radius: 50px;
-        }
-
-        .tabs {
-            display: flex;
-            background-color: #F5F7FA;
-            border-bottom: 1px solid #E2E8F0;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 18px;
-            text-align: center;
+        .pet-options button, #pet-actions button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #ffb3cc;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            color: #718096;
-            border-bottom: 3px solid transparent;
         }
 
-        .tab.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-            background-color: white;
+        .pet-options button:hover, #pet-actions button:hover {
+            background-color: #ff99cc;
         }
 
-        .tab i {
-            margin-right: 8px;
-            font-size: 1.1rem;
-        }
-
-        .main-content {
-            display: flex;
-            min-height: 450px;
-            padding: 30px;
-            gap: 30px;
-        }
-
-        .pet-area {
-            flex: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #F0F4FF 0%, #E6F7FF 100%);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .pet-display {
-            font-size: 140px;
-            margin: 20px 0;
-            transition: var(--transition);
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .pet-message {
-            background-color: white;
-            border: 2px solid var(--primary-light);
-            border-radius: 15px;
-            padding: 15px 25px;
+        #pet-status {
             margin-top: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-            max-width: 80%;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .pet-message:after {
-            content: '';
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -10px;
-            border-width: 10px;
-            border-style: solid;
-            border-color: transparent transparent var(--primary-light) transparent;
-        }
-
-        .stats-area {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .stats-container {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-
-        .stat {
-            margin-bottom: 20px;
-        }
-
-        .stat:last-child {
-            margin-bottom: 0;
-        }
-
-        .stat-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #4A5568;
-        }
-
-        .stat-bar {
-            height: 12px;
-            background-color: #EDF2F7;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .stat-fill {
-            height: 100%;
-            border-radius: 10px;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .stat-fill:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background-image: linear-gradient(to right, 
-                rgba(255,255,255,0.2) 0%, 
-                rgba(255,255,255,0.4) 50%, 
-                rgba(255,255,255,0.2) 100%);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 15px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
-        }
-
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(108, 99, 255, 0.4);
-        }
-
-        .action-btn:active {
-            transform: translateY(1px);
-        }
-
-        .action-btn i {
-            font-size: 1.3rem;
-        }
-
-        .tab-content {
+        .hidden {
             display: none;
-            padding: 30px;
-            min-height: 300px;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .tab-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--primary);
-            text-align: center;
-        }
-
-        .shop-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-        }
-
-        .shop-item {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid transparent;
-            box-shadow: var(--shadow);
-        }
-
-        .shop-item:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .shop-item i {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .shop-item-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .shop-item-price {
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        .game-area {
-            text-align: center;
-        }
-
-        .game-container {
-            background: linear-gradient(135deg, #F0F4FF 0%, #E6F7FF 100%);
-            border-radius: var(--radius);
-            padding: 30px;
-            margin: 20px 0;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .game-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .game-btn {
-            background: linear-gradient(135deg, var(--accent) 0%, #FF8EA6 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 15px 30px;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(255, 101, 132, 0.3);
-        }
-
-        .game-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(255, 101, 132, 0.4);
-        }
-
-        .inventory-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-        }
-
-        .inventory-item {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            font-size: 2rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-
-        .inventory-item:hover {
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .inventory-item-name {
-            font-size: 0.9rem;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #F5F7FA;
-            color: #718096;
-            font-size: 0.9rem;
-            border-top: 1px solid #E2E8F0;
-        }
-
-        .notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            background-color: white;
-            color: var(--dark);
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            transform: translateX(150%);
-            transition: transform 0.5s ease;
-            z-index: 1000;
-            border-left: 4px solid var(--success);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 350px;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification i {
-            font-size: 1.5rem;
-            color: var(--success);
-        }
-
-        .progress-ring {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 20px auto;
-        }
-
-        .progress-ring-circle {
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-            transition: stroke-dashoffset 0.5s ease;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .pet-info {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .actions {
-                grid-template-columns: 1fr;
-            }
-            
-            .shop-items, .inventory-items {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .tabs {
-                flex-wrap: wrap;
-            }
-            
-            .tab {
-                flex: 1 0 50%;
-            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Pet Care Adventure</h1>
+    </header>
+
     <div class="container">
-        <header>
-            <h1><i class="fas fa-paw"></i> Virtual Pet Paradise</h1>
-            <p class="subtitle">Rawat hewan peliharaan virtualmu dengan penuh kasih sayang!</p>
-        </header>
-        
-        <div class="pet-info">
-            <div class="pet-name" id="pet-name">Petsy</div>
-            <div class="pet-level">Level <span id="pet-level">1</span></div>
-            <div class="coins"><i class="fas fa-coins"></i> <span id="coin-count">150</span></div>
-        </div>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="care"><i class="fas fa-heart"></i> Perawatan</div>
-            <div class="tab" data-tab="shop"><i class="fas fa-shopping-cart"></i> Toko</div>
-            <div class="tab" data-tab="games"><i class="fas fa-gamepad"></i> Permainan</div>
-            <div class="tab" data-tab="inventory"><i class="fas fa-box-open"></i> Inventori</div>
-        </div>
-        
-        <div class="tab-content active" id="care-tab">
-            <div class="main-content">
-                <div class="pet-area">
-                    <div class="pet-display" id="pet-display">🐶</div>
-                    <div class="pet-message" id="pet-message">Hai! Aku senang bertemu denganmu!</div>
-                    
-                    <div class="progress-ring">
-                        <svg width="120" height="120">
-                            <circle class="progress-ring-circle" stroke="#6C63FF" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
-                        </svg>
-                        <div class="progress-text" id="happiness-percent">85%</div>
-                    </div>
-                </div>
-                
-                <div class="stats-area">
-                    <div class="stats-container">
-                        <div class="stat">
-                            <div class="stat-label">
-                                <span>Lapar</span>
-                                <span id="hunger-value">70%</span>
-                            </div>
-                            <div class="stat-bar">
-                                <div class="stat-fill" id="hunger-bar" style="width: 70%; background-color: var(--warning);"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat">
-                            <div class="stat-label">
-                                <span>Kebahagiaan</span>
-                                <span id="happiness-value">85%</span>
-                            </div>
-                            <div class="stat-bar">
-                                <div class="stat-fill" id="happiness-bar" style="width: 85%; background-color: var(--success);"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat">
-                            <div class="stat-label">
-                                <span>Energi</span>
-                                <span id="energy-value">90%</span>
-                            </div>
-                            <div class="stat-bar">
-                                <div class="stat-fill" id="energy-bar" style="width: 90%; background-color: var(--primary);"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat">
-                            <div class="stat-label">
-                                <span>Kebersihan</span>
-                                <span id="cleanliness-value">80%</span>
-                            </div>
-                            <div class="stat-bar">
-                                <div class="stat-fill" id="cleanliness-bar" style="width: 80%; background-color: var(--secondary);"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="actions">
-                        <button class="action-btn" id="feed-btn">
-                            <i class="fas fa-utensils"></i> Beri Makan
-                        </button>
-                        <button class="action-btn" id="play-btn">
-                            <i class="fas fa-gamepad"></i> Main Bersama
-                        </button>
-                        <button class="action-btn" id="clean-btn">
-                            <i class="fas fa-bath"></i> Mandikan
-                        </button>
-                        <button class="action-btn" id="sleep-btn">
-                            <i class="fas fa-bed"></i> Tidurkan
-                        </button>
-                    </div>
-                </div>
+        <section id="pet-selection">
+            <h2>Pilih Pet</h2>
+            <div class="pet-options">
+                <button id="cat">Kucing</button>
+                <button id="dog">Anjing</button>
+                <button id="rabbit">Kelinci</button>
+                <button id="hamster">Hamster</button>
             </div>
-        </div>
-        
-        <div class="tab-content" id="shop-tab">
-            <h2 class="tab-title">Toko Virtual Pet</h2>
-            <div class="shop-items">
-                <div class="shop-item" data-item="food">
-                    <i class="fas fa-apple-alt"></i>
-                    <div class="shop-item-name">Makanan Lezat</div>
-                    <div class="shop-item-price"><i class="fas fa-coins"></i> 20</div>
-                </div>
-                <div class="shop-item" data-item="toy">
-                    <i class="fas fa-baseball-ball"></i>
-                    <div class="shop-item-name">Bola Mainan</div>
-                    <div class="shop-item-price"><i class="fas fa-coins"></i> 35</div>
-                </div>
-                <div class="shop-item" data-item="shampoo">
-                    <i class="fas fa-pump-soap"></i>
-                    <div class="shop-item-name">Shampoo Wangi</div>
-                    <div class="shop-item-price"><i class="fas fa-coins"></i> 25</div>
-                </div>
-                <div class="shop-item" data-item="collar">
-                    <i class="fas fa-gem"></i>
-                    <div class="shop-item-name">Kalung Berlian</div>
-                    <div class="shop-item-price"><i class="fas fa-coins"></i> 80</div>
-                </div>
-                <div class="shop-item" data-item="house">
-                    <i class="fas fa-home"></i>
-                    <div class="shop-item-name">Rumah Mewah</div>
-                    <div class="shop-item-price"><i class="fas fa-coins"></i> 150</div>
-                </div>
-                <div class="shop-item" data-item="medicine">
-                    <i class="fas fa-first-aid"></i>
-                    <div class="shop-item-name">Obat-obatan</div>
-                    <div class="shop-item-price"><i class="fas fa-coins"></i> 45</div>
-                </div>
+        </section>
+
+        <section id="pet-info" class="hidden">
+            <h2 id="pet-name"></h2>
+            <div id="pet-status">
+                <div><strong>Lapar:</strong> <span id="hunger">100</span>%</div>
+                <div><strong>Haus:</strong> <span id="thirst">100</span>%</div>
+                <div><strong>Kebersihan:</strong> <span id="hygiene">100</span>%</div>
+                <div><strong>Kebahagiaan:</strong> <span id="happiness">100</span>%</div>
+                <div><strong>Energi:</strong> <span id="energy">100</span>%</div>
             </div>
-        </div>
-        
-        <div class="tab-content" id="games-tab">
-            <h2 class="tab-title">Permainan Seru</h2>
-            <div class="game-area">
-                <p>Mainkan game untuk mendapatkan koin dan meningkatkan kebahagiaan hewan peliharaanmu!</p>
-                
-                <div class="game-container">
-                    <div id="game-content">
-                        <div class="game-title">Game Tebak Angka</div>
-                        <p>Tebak angka antara 1-10 untuk mendapatkan koin!</p>
-                        <button class="game-btn" id="start-game">Mulai Permainan</button>
-                    </div>
-                </div>
-                
-                <div class="coins">Koin yang dimiliki: <i class="fas fa-coins"></i> <span id="game-coin-count">150</span></div>
+            <div id="pet-actions">
+                <button id="feed">Memberi Makan</button>
+                <button id="give-water">Memberi Minum</button>
+                <button id="bathe">Memandikan</button>
+                <button id="play">Bermain</button>
+                <button id="sleep">Tidur</button>
             </div>
-        </div>
-        
-        <div class="tab-content" id="inventory-tab">
-            <h2 class="tab-title">Inventori Barang</h2>
-            <div class="inventory-items">
-                <div class="inventory-item">
-                    <div>🍎</div>
-                    <div class="inventory-item-name">Makanan (3)</div>
-                </div>
-                <div class="inventory-item">
-                    <div>🎾</div>
-                    <div class="inventory-item-name">Bola (2)</div>
-                </div>
-                <div class="inventory-item">
-                    <div>🧴</div>
-                    <div class="inventory-item-name">Shampoo (1)</div>
-                </div>
-                <div class="inventory-item">
-                    <div>💎</div>
-                    <div class="inventory-item-name">Kalung (0)</div>
-                </div>
-                <div class="inventory-item">
-                    <div>🏠</div>
-                    <div class="inventory-item-name">Rumah (0)</div>
-                </div>
-                <div class="inventory-item">
-                    <div>💊</div>
-                    <div class="inventory-item-name">Obat (0)</div>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            <p>Virtual Pet @cueku on twt © 2025 - Semua hewan virtual dilindungi dengan cinta!</p>
-            <p>Website ini berjalan sepenuhnya offline - Data disimpan di peramban Anda</p>
-        </footer>
-    </div>
-    
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <div id="notification-text">Pemberitahuan</div>
+        </section>
     </div>
 
     <script>
-        // Data hewan peliharaan
-        let pet = {
-            name: "Petsy",
-            type: "dog",
-            level: 1,
-            exp: 0,
-            hunger: 70,
-            happiness: 85,
-            energy: 90,
-            cleanliness: 80,
-            coins: 150
-        };
+        document.addEventListener("DOMContentLoaded", () => {
+            let pet = null;
+            let hunger = 100, thirst = 100, hygiene = 100, happiness = 100, energy = 100;
 
-        // Data inventory
-        let inventory = {
-            food: 3,
-            toy: 2,
-            shampoo: 1,
-            collar: 0,
-            house: 0,
-            medicine: 0
-        };
+            // Elements
+            const petSelection = document.getElementById('pet-selection');
+            const petInfo = document.getElementById('pet-info');
+            const petName = document.getElementById('pet-name');
+            const hungerBar = document.getElementById('hunger');
+            const thirstBar = document.getElementById('thirst');
+            const hygieneBar = document.getElementById('hygiene');
+            const happinessBar = document.getElementById('happiness');
+            const energyBar = document.getElementById('energy');
+            const feedButton = document.getElementById('feed');
+            const giveWaterButton = document.getElementById('give-water');
+            const batheButton = document.getElementById('bathe');
+            const playButton = document.getElementById('play');
+            const sleepButton = document.getElementById('sleep');
 
-        // Elemen DOM
-        const petDisplay = document.getElementById('pet-display');
-        const petMessage = document.getElementById('pet-message');
-        const petName = document.getElementById('pet-name');
-        const petLevel = document.getElementById('pet-level');
-        const coinCount = document.getElementById('coin-count');
-        const happinessPercent = document.getElementById('happiness-percent');
-        
-        // Stat bars
-        const hungerBar = document.getElementById('hunger-bar');
-        const hungerValue = document.getElementById('hunger-value');
-        const happinessBar = document.getElementById('happiness-bar');
-        const happinessValue = document.getElementById('happiness-value');
-        const energyBar = document.getElementById('energy-bar');
-        const energyValue = document.getElementById('energy-value');
-        const cleanlinessBar = document.getElementById('cleanliness-bar');
-        const cleanlinessValue = document.getElementById('cleanliness-value');
-        
-        // Progress ring
-        const progressRing = document.querySelector('.progress-ring-circle');
-        const radius = progressRing.r.baseVal.value;
-        const circumference = radius * 2 * Math.PI;
-        
-        progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
-        progressRing.style.strokeDashoffset = circumference;
-        
-        // Tombol aksi
-        const feedBtn = document.getElementById('feed-btn');
-        const playBtn = document.getElementById('play-btn');
-        const cleanBtn = document.getElementById('clean-btn');
-        const sleepBtn = document.getElementById('sleep-btn');
-        
-        // Tab system
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        // Notifikasi
-        const notification = document.getElementById('notification');
-        const notificationText = document.getElementById('notification-text');
-        
-        // Set progress ring
-        function setProgress(percent) {
-            const offset = circumference - (percent / 100) * circumference;
-            progressRing.style.strokeDashoffset = offset;
-            happinessPercent.textContent = `${percent}%`;
-        }
-        
-        // Load data dari localStorage
-        function loadGameData() {
-            const savedPet = localStorage.getItem('virtualPet');
-            const savedInventory = localStorage.getItem('petInventory');
-            
-            if (savedPet) {
-                pet = JSON.parse(savedPet);
+            // Pet selection handler
+            document.getElementById('cat').addEventListener('click', () => startGame('Kucing'));
+            document.getElementById('dog').addEventListener('click', () => startGame('Anjing'));
+            document.getElementById('rabbit').addEventListener('click', () => startGame('Kelinci'));
+            document.getElementById('hamster').addEventListener('click', () => startGame('Hamster'));
+
+            // Start game with selected pet
+            function startGame(petType) {
+                pet = petType;
+                petSelection.classList.add('hidden');
+                petInfo.classList.remove('hidden');
+                petName.textContent = `${pet} yang lucu!`;
+                updateStatus();
             }
-            
-            if (savedInventory) {
-                inventory = JSON.parse(savedInventory);
+
+            // Update status bars
+            function updateStatus() {
+                hungerBar.textContent = hunger;
+                thirstBar.textContent = thirst;
+                hygieneBar.textContent = hygiene;
+                happinessBar.textContent = happiness;
+                energyBar.textContent = energy;
             }
-            
-            updateDisplay();
-        }
-        
-        // Simpan data ke localStorage
-        function saveGameData() {
-            localStorage.setItem('virtualPet', JSON.stringify(pet));
-            localStorage.setItem('petInventory', JSON.stringify(inventory));
-        }
-        
-        // Update tampilan statistik
-        function updateStats() {
-            hungerBar.style.width = pet.hunger + '%';
-            hungerValue.textContent = pet.hunger + '%';
-            
-            happinessBar.style.width = pet.happiness + '%';
-            happinessValue.textContent = pet.happiness + '%';
-            setProgress(pet.happiness);
-            
-            energyBar.style.width = pet.energy + '%';
-            energyValue.textContent = pet.energy + '%';
-            
-            cleanlinessBar.style.width = pet.cleanliness + '%';
-            cleanlinessValue.textContent = pet.cleanliness + '%';
-            
-            petLevel.textContent = pet.level;
-            coinCount.textContent = pet.coins;
-            document.getElementById('game-coin-count').textContent = pet.coins;
-            
-            // Update emosi hewan berdasarkan status
-            updatePetEmotion();
-        }
-        
-        // Update emosi dan pesan hewan
-        function updatePetEmotion() {
-            if (pet.hunger < 20) {
-                petDisplay.textContent = '😫';
-                petMessage.textContent = 'Aku lapar sekali... Tolong beri aku makan!';
-            } else if (pet.happiness < 30) {
-                petDisplay.textContent = '😔';
-                petMessage.textContent = 'Aku sedih, main denganku yuk!';
-            } else if (pet.energy < 20) {
-                petDisplay.textContent = '😴';
-                petMessage.textContent = 'Aku sangat mengantuk...';
-            } else if (pet.cleanliness < 30) {
-                petDisplay.textContent = '🤢';
-                petMessage.textContent = 'Aku merasa kotor, mandikan aku!';
-            } else {
-                petDisplay.textContent = '🐶';
-                petMessage.textContent = getRandomHappyMessage();
-            }
-        }
-        
-        // Dapatkan pesan bahagia acak
-        function getRandomHappyMessage() {
-            const messages = [
-                'Hai! Aku senang bertemu denganmu!',
-                'Kamu pemilik yang hebat!',
-                'Aku sangat bahagia hari ini!',
-                'Mari kita bermain bersama!',
-                'Aku menyayangimu!',
-                'Terima kasih telah merawatku!'
-            ];
-            return messages[Math.floor(Math.random() * messages.length)];
-        }
-        
-        // Tampilkan notifikasi
-        function showNotification(message, type = 'success') {
-            notificationText.textContent = message;
-            notification.className = 'notification';
-            
-            // Set warna berdasarkan jenis notifikasi
-            if (type === 'success') {
-                notification.style.borderLeftColor = 'var(--success)';
-                notification.querySelector('i').className = 'fas fa-check-circle';
-                notification.querySelector('i').style.color = 'var(--success)';
-            } else if (type === 'warning') {
-                notification.style.borderLeftColor = 'var(--warning)';
-                notification.querySelector('i').className = 'fas fa-exclamation-triangle';
-                notification.querySelector('i').style.color = 'var(--warning)';
-            } else if (type === 'error') {
-                notification.style.borderLeftColor = 'var(--danger)';
-                notification.querySelector('i').className = 'fas fa-times-circle';
-                notification.querySelector('i').style.color = 'var(--danger)';
-            }
-            
-            // Tampilkan notifikasi
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-            
-            // Sembunyikan setelah 3 detik
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Sistem level dan experience
-        function addExp(amount) {
-            pet.exp += amount;
-            const expNeeded = pet.level * 20;
-            
-            if (pet.exp >= expNeeded) {
-                pet.level++;
-                pet.exp = 0;
-                pet.coins += 50;
-                showNotification(`Selamat! ${pet.name} naik ke level ${pet.level}! Kamu dapat 50 koin!`, 'success');
-            }
-        }
-        
-        // Update seluruh tampilan
-        function updateDisplay() {
-            updateStats();
-            saveGameData();
-        }
-        
-        // Event listener untuk tombol aksi
-        feedBtn.addEventListener('click', function() {
-            if (inventory.food > 0) {
-                pet.hunger = Math.min(100, pet.hunger + 20);
-                inventory.food--;
-                addExp(5);
-                showNotification(`${pet.name} sudah makan! Lapar -20%`, 'success');
-                updateDisplay();
-            } else {
-                showNotification('Kamu tidak memiliki makanan! Beli di toko.', 'warning');
-            }
-        });
-        
-        playBtn.addEventListener('click', function() {
-            if (inventory.toy > 0) {
-                pet.happiness = Math.min(100, pet.happiness + 15);
-                pet.hunger = Math.max(0, pet.hunger - 5);
-                pet.energy = Math.max(0, pet.energy - 10);
-                addExp(8);
-                showNotification(`${pet.name} senang bermain! Bahagia +15%`, 'success');
-                updateDisplay();
-            } else {
-                showNotification('Kamu tidak memiliki mainan! Beli di toko.', 'warning');
-            }
-        });
-        
-        cleanBtn.addEventListener('click', function() {
-            if (inventory.shampoo > 0) {
-                pet.cleanliness = 100;
-                inventory.shampoo--;
-                addExp(3);
-                showNotification(`${pet.name} sudah dimandikan! Kebersihan +100%`, 'success');
-                updateDisplay();
-            } else {
-                showNotification('Kamu tidak memiliki shampoo! Beli di toko.', 'warning');
-            }
-        });
-        
-        sleepBtn.addEventListener('click', function() {
-            pet.energy = 100;
-            pet.hunger = Math.max(0, pet.hunger - 10);
-            addExp(2);
-            showNotification(`${pet.name} sudah tidur! Energi +100%`, 'success');
-            updateDisplay();
-        });
-        
-        // Sistem tab
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabId = tab.getAttribute('data-tab');
-                
-                // Hapus kelas active dari semua tab dan konten
-                tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(tc => tc.classList.remove('active'));
-                
-                // Tambahkan kelas active ke tab dan konten yang diklik
-                tab.classList.add('active');
-                document.getElementById(`${tabId}-tab`).classList.add('active');
+
+            // Actions for interacting with the pet
+            feedButton.addEventListener('click', () => {
+                hunger = Math.min(100, hunger + 20);
+                updateStatus();
+            });
+
+            giveWaterButton.addEventListener('click', () => {
+                thirst = Math.min(100, thirst + 20);
+                updateStatus();
+            });
+
+            batheButton.addEventListener('click', () => {
+                hygiene = Math.min(100, hygiene + 30);
+                updateStatus();
+            });
+
+            playButton.addEventListener('click', () => {
+                happiness = Math.min(100, happiness + 20);
+                updateStatus();
+            });
+
+            sleepButton.addEventListener('click', () => {
+                energy = Math.min(100, energy + 40);
+                updateStatus();
             });
         });
-        
-        // Sistem toko
-        const shopItems = document.querySelectorAll('.shop-item');
-        shopItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const itemType = item.getAttribute('data-item');
-                const itemCost = parseInt(item.querySelector('.shop-item-price').textContent.replace(/\D/g, ''));
-                
-                if (pet.coins >= itemCost) {
-                    pet.coins -= itemCost;
-                    inventory[itemType]++;
-                    showNotification(`Berhasil membeli ${itemType}!`, 'success');
-                    updateDisplay();
-                } else {
-                    showNotification('Koin tidak cukup!', 'error');
-                }
-            });
-        });
-        
-        // Sistem permainan
-        const startGameBtn = document.getElementById('start-game');
-        const gameContent = document.getElementById('game-content');
-        
-        startGameBtn.addEventListener('click', function() {
-            gameContent.innerHTML = `
-                <div class="game-title">Tebak Angka</div>
-                <p>Saya memikirkan angka antara 1-10. Tebak dengan 3 kesempatan!</p>
-                <input type="number" id="guess-input" min="1" max="10" style="padding: 10px; font-size: 1.2rem; width: 100px; text-align: center; border: 2px solid #6C63FF; border-radius: 8px; margin: 10px;">
-                <button class="game-btn" id="guess-btn" style="margin-top: 10px;">Tebak!</button>
-                <p id="attempts-left" style="margin-top: 10px;">Kesempatan: 3</p>
-            `;
-            
-            const randomNumber = Math.floor(Math.random() * 10) + 1;
-            let attempts = 3;
-            
-            document.getElementById('guess-btn').addEventListener('click', function() {
-                const guess = parseInt(document.getElementById('guess-input').value);
-                
-                if (isNaN(guess) || guess < 1 || guess > 10) {
-                    showNotification('Masukkan angka antara 1-10!', 'warning');
-                    return;
-                }
-                
-                if (guess === randomNumber) {
-                    const coinsWon = Math.floor(Math.random() * 20) + 10;
-                    pet.coins += coinsWon;
-                    pet.happiness = Math.min(100, pet.happiness + 5);
-                    showNotification(`Selamat! Tebakan benar! Kamu mendapatkan ${coinsWon} koin!`, 'success');
-                    gameContent.innerHTML = `
-                        <div class="game-title">Selamat!</div>
-                        <p>Kamu menebak dengan benar! Angka yang benar adalah ${randomNumber}.</p>
-                        <p>Kamu mendapatkan ${coinsWon} koin!</p>
-                        <button class="game-btn" id="play-again">Main Lagi</button>
-                    `;
-                    
-                    document.getElementById('play-again').addEventListener('click', function() {
-                        startGameBtn.click();
-                    });
-                } else {
-                    attempts--;
-                    document.getElementById('attempts-left').textContent = `Kesempatan: ${attempts}`;
-                    
-                    if (attempts > 0) {
-                        const hint = guess < randomNumber ? 'terlalu rendah' : 'terlalu tinggi';
-                        showNotification(`Tebakan ${hint}! Sisa percobaan: ${attempts}`, 'warning');
-                    } else {
-                        showNotification(`Game over! Angka yang benar adalah ${randomNumber}.`, 'error');
-                        gameContent.innerHTML = `
-                            <div class="game-title">Game Over</div>
-                            <p>Angka yang benar adalah ${randomNumber}. Coba lagi!</p>
-                            <button class="game-btn" id="play-again">Main Lagi</button>
-                        `;
-                        
-                        document.getElementById('play-again').addEventListener('click', function() {
-                            startGameBtn.click();
-                        });
-                    }
-                }
-                
-                updateDisplay();
-            });
-        });
-        
-        // Simulasi waktu (stat menurun seiring waktu)
-        setInterval(function() {
-            pet.hunger = Math.max(0, pet.hunger - 1);
-            pet.happiness = Math.max(0, pet.happiness - 0.5);
-            pet.energy = Math.max(0, pet.energy - 0.3);
-            pet.cleanliness = Math.max(0, pet.cleanliness - 0.7);
-            
-            updateDisplay();
-        }, 60000); // Setiap 1 menit
-        
-        // Inisialisasi game
-        loadGameData();
-        setProgress(pet.happiness);
-        
-        // Animasi hewan
-        setInterval(() => {
-            if (pet.happiness > 70 && pet.energy > 50) {
-                petDisplay.style.transform = 'scale(1.1) rotate(5deg)';
-                setTimeout(() => {
-                    petDisplay.style.transform = 'scale(1) rotate(0deg)';
-                }, 300);
-            }
-        }, 5000);
     </script>
 </body>
 </html>
