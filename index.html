@@ -34,7 +34,7 @@
             align-items: center;
             padding: 20px;
             color: #5a5a5a;
-            overflow: hidden;
+            overflow: auto;
         }
 
         .game-container {
@@ -47,7 +47,8 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            height: 95vh;
+            min-height: 90vh;
+            max-height: 95vh;
         }
 
         /* Header */
@@ -89,6 +90,7 @@
             display: flex;
             flex: 1;
             overflow: hidden;
+            min-height: 600px;
         }
 
         /* Sidebar */
@@ -112,16 +114,33 @@
         }
 
         .pet-avatar {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             margin: 0 auto 10px;
-            background: var(--pastel-pink);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.5rem;
+            font-size: 4rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pet-avatar.cat {
+            background: linear-gradient(135deg, #ffb6c1, #ff8fab);
+        }
+
+        .pet-avatar.dog {
+            background: linear-gradient(135deg, #ffd166, #ffb347);
+        }
+
+        .pet-avatar.rabbit {
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+        }
+
+        .pet-avatar.hamster {
+            background: linear-gradient(135deg, #d8bbff, #b388eb);
         }
 
         .pet-name {
@@ -234,6 +253,7 @@
             position: relative;
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
             overflow: hidden;
+            min-height: 400px;
         }
 
         .room-background {
@@ -248,8 +268,8 @@
 
         .pet-display {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -258,15 +278,33 @@
         }
 
         .pet {
-            width: 150px;
-            height: 150px;
-            background-color: var(--pastel-pink);
-            border-radius: 50%;
+            width: 200px;
+            height: 200px;
             position: relative;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
             cursor: pointer;
             z-index: 2;
+        }
+
+        .pet.cat {
+            background: linear-gradient(135deg, #ffb6c1, #ff8fab);
+            border-radius: 50% 50% 40% 40%;
+        }
+
+        .pet.dog {
+            background: linear-gradient(135deg, #ffd166, #ffb347);
+            border-radius: 50% 50% 40% 40%;
+        }
+
+        .pet.rabbit {
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            border-radius: 50% 50% 40% 40%;
+        }
+
+        .pet.hamster {
+            background: linear-gradient(135deg, #d8bbff, #b388eb);
+            border-radius: 50%;
         }
 
         .pet:hover {
@@ -275,22 +313,22 @@
 
         .pet-face {
             position: absolute;
-            top: 40px;
+            top: 50px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 80px;
+            width: 120px;
+            height: 100px;
         }
 
         .pet-eyes {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .pet-eye {
-            width: 20px;
-            height: 20px;
+            width: 25px;
+            height: 25px;
             background-color: #333;
             border-radius: 50%;
             position: relative;
@@ -299,32 +337,61 @@
         .pet-eye::after {
             content: '';
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background-color: white;
             border-radius: 50%;
-            top: 4px;
-            left: 4px;
+            top: 5px;
+            left: 5px;
         }
 
         .pet-mouth {
-            width: 40px;
-            height: 20px;
-            border-bottom: 3px solid #333;
-            border-radius: 0 0 20px 20px;
+            width: 50px;
+            height: 25px;
+            border-bottom: 4px solid #333;
+            border-radius: 0 0 25px 25px;
             margin: 0 auto;
             transition: all 0.3s ease;
         }
 
         .pet-happy .pet-mouth {
-            border-bottom: 3px solid #333;
-            border-radius: 0 0 20px 20px;
+            border-bottom: 4px solid #333;
+            border-radius: 0 0 25px 25px;
         }
 
         .pet-sad .pet-mouth {
-            border-bottom: 3px solid var(--danger);
-            border-radius: 20px 20px 0 0;
+            border-bottom: 4px solid var(--danger);
+            border-radius: 25px 25px 0 0;
             transform: rotate(180deg);
+        }
+
+        /* Ears for cat and rabbit */
+        .pet-ears {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pet-ear {
+            width: 40px;
+            height: 60px;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .pet.cat .pet-ear {
+            background: linear-gradient(135deg, #ff8fab, #ff6b95);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .pet.rabbit .pet-ear {
+            background: linear-gradient(135deg, #b2ebf2, #80deea);
+            clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+            height: 80px;
         }
 
         .room-items {
@@ -335,14 +402,14 @@
         }
 
         .room-item {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: white;
             border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.2s ease;
@@ -695,7 +762,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 150px;
+            width: 180px;
         }
 
         .pet-option:hover {
@@ -708,7 +775,7 @@
         }
 
         .pet-option-icon {
-            font-size: 4rem;
+            font-size: 5rem;
             margin-bottom: 10px;
         }
 
@@ -764,37 +831,6 @@
             background: linear-gradient(to right, var(--accent), #ff9e6d);
             border-radius: 4px;
             transition: width 0.5s ease;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .game-main {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                flex-direction: row;
-                overflow-x: auto;
-                padding: 15px;
-            }
-            
-            .pet-info-card {
-                min-width: 200px;
-            }
-            
-            .activities {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .shop-items {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .pet-options {
-                flex-direction: column;
-                align-items: center;
-            }
         }
 
         /* Daily Reward */
@@ -858,17 +894,104 @@
         /* Food item for feeding game */
         .food-item {
             position: absolute;
-            font-size: 2rem;
+            font-size: 2.5rem;
             cursor: grab;
             user-select: none;
+            transition: transform 0.2s;
+        }
+
+        .food-item:hover {
+            transform: scale(1.2);
         }
 
         /* Ball for play game */
         .ball {
             position: absolute;
-            font-size: 2rem;
+            font-size: 2.5rem;
             cursor: pointer;
             transition: all 0.5s ease;
+        }
+
+        .ball:hover {
+            transform: scale(1.2);
+        }
+
+        /* Pet accessories */
+        .pet-accessory {
+            position: absolute;
+            z-index: 3;
+        }
+
+        .pet-bow {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .game-main {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 15px;
+            }
+            
+            .pet-info-card {
+                min-width: 250px;
+            }
+            
+            .activities {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .shop-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .pet-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pet-display {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .pet {
+                width: 160px;
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .game-stats {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .stat-item {
+                padding: 5px 10px;
+            }
+            
+            .room-items {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .pet-option {
+                width: 140px;
+            }
+            
+            .pet-option-icon {
+                font-size: 4rem;
+            }
         }
     </style>
 </head>
@@ -938,8 +1061,8 @@
         <div class="game-main">
             <div class="sidebar">
                 <div class="pet-info-card">
-                    <div class="pet-avatar" id="pet-avatar">
-                        <i class="fas fa-cat"></i>
+                    <div class="pet-avatar cat" id="pet-avatar">
+                        🐱
                     </div>
                     <div class="pet-name" id="pet-name">Fluffy</div>
                     <div class="pet-level">Level <span id="pet-level">3</span></div>
@@ -1023,14 +1146,19 @@
                 <div class="pet-room">
                     <div class="room-background"></div>
                     <div class="pet-display">
-                        <div class="pet pet-happy" id="pet">
+                        <div class="pet cat pet-happy" id="pet">
+                            <div class="pet-ears">
+                                <div class="pet-ear left"></div>
+                                <div class="pet-ear right"></div>
+                            </div>
                             <div class="pet-face">
                                 <div class="pet-eyes">
-                                    <div class="pet-eye"></div>
-                                    <div class="pet-eye"></div>
+                                    <div class="pet-eye left"></div>
+                                    <div class="pet-eye right"></div>
                                 </div>
                                 <div class="pet-mouth"></div>
                             </div>
+                            <div class="pet-accessory pet-bow">🎀</div>
                         </div>
                     </div>
                     
@@ -1300,6 +1428,7 @@
                 }
                 
                 updateGameDisplay();
+                updatePetVisual();
             } else {
                 // Show selection screen for new game
                 selectionScreen.style.display = 'flex';
@@ -1321,6 +1450,7 @@
                         gameState.lastPlayed = new Date().toDateString();
                         selectionScreen.style.display = 'none';
                         updateGameDisplay();
+                        updatePetVisual();
                         saveGame();
                         showNotification(`Selamat datang, ${name}!`, 'success');
                     } else {
@@ -1360,15 +1490,34 @@
             
             // Update pet avatar based on type
             const petIcons = {
-                cat: 'fa-cat',
-                dog: 'fa-dog',
-                rabbit: 'fa-rabbit',
-                hamster: 'fa-hamster'
+                cat: '🐱',
+                dog: '🐶',
+                rabbit: '🐰',
+                hamster: '🐹'
             };
-            petAvatar.innerHTML = `<i class="fas ${petIcons[gameState.petType]}"></i>`;
+            petAvatar.innerHTML = petIcons[gameState.petType];
+            petAvatar.className = `pet-avatar ${gameState.petType}`;
             
             // Update pet mood
             updatePetMood();
+        }
+
+        // Update pet visual based on type
+        function updatePetVisual() {
+            // Remove all pet type classes
+            petElement.classList.remove('cat', 'dog', 'rabbit', 'hamster');
+            // Add current pet type class
+            petElement.classList.add(gameState.petType);
+            
+            // Update ears visibility
+            const ears = petElement.querySelector('.pet-ears');
+            if (ears) {
+                if (gameState.petType === 'cat' || gameState.petType === 'rabbit') {
+                    ears.style.display = 'flex';
+                } else {
+                    ears.style.display = 'none';
+                }
+            }
         }
 
         // Update pet mood based on status
@@ -1895,6 +2044,12 @@
                 showNotification("Your pet loves the attention!", 'success');
                 saveGame();
             });
+
+            // Room items
+            document.getElementById('food-bowl').addEventListener('click', feedPet);
+            document.getElementById('water-bowl').addEventListener('click', giveDrink);
+            document.getElementById('toy').addEventListener('click', playWithPet);
+            document.getElementById('bed').addEventListener('click', putToSleep);
         }
 
         // Start game loop
